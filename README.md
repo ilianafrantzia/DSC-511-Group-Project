@@ -70,7 +70,68 @@ Columns Overview
  **Target variable:** averageRating
 
 
+## Exploratory Data Analysis
 
 
+
+## Advanced Analysis
+
+### Text Analysis
+
+#### Text Preprocessing by Column
+
+We applied various text preprocessing techniques depending on the content and role of each column in the dataset. Below is a summary:
+
+-**primaryTitle**
+Lowercasing: Converted all titles to lowercase for consistency.
+Tokenization: Split each title into individual tokens using PySpark's Tokenizer.
+Stopword Removal: Common words (e.g., "the", "a") were removed using StopWordsRemover.
+Lemmatization: In some experiments, NLTK’s PorterStemmer and WordNetLemmatizer were used via UDFs.
+TF-IDF Vectorization: Represented cleaned titles as sparse feature vectors using HashingTF and IDF.
+
+-**genres**
+We split the genre string into tokens,apply lemmatization,removed duplicates and used `CountVectorizer` to convert them into numerical features for modeling.
+
+-**primaryProfession**
+We split the profession strings into tokens, removed duplicates, and lemmatized each token to standardize word forms. Finally, we used `CountVectorizer` to convert the profession tokens into numerical features for modeling.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Clustering
+
+#### Genre-Based Clustering
+We applied unsupervised clustering using the KMeans algorithm on movie genres to identify common patterns in movie types.
+
+**Feature Construction:** `genre features` that we got from text analysis before and use it for clustering.
+**Optimal k Selection:** Used Silhouette Scores to evaluate different values of k. The best performance was observed at k = 6.
+**Clustering Results:**
+Fitted KMeans with k=6 to assign each movie to one of six genre-based clusters.
+Extracted top genres for each cluster by analyzing the cluster centers.
+Assigned intuitive labels to each cluster based on genre composition:
+**Cluster	Top Genres	Label**
+
+| Cluster | Top Genres                                      | Label                             |
+|---------|--------------------------------------------------|-----------------------------------|
+| **0**   | Fantasy, Drama, Comedy, Adventure, Action        | Fantasy & Action Mix              |
+| **1**   | Comedy, Documentary, Action, Romance, Adventure  | Diverse Popular Genres            |
+| **2**   | Drama, Comedy, Romance, Crime, Action            | Mainstream Drama & Romance        |
+| **3**   | Horror, Thriller, Drama, Mystery, Comedy         | Thriller & Mystery Blend          |
+| **4**   | Drama, History, War, Biography, Romance          | Historical & Biographical         |
+| **5**   | Documentary, Biography, History, Drama, Music    | Informative & Cultural Features   |
+
+**Cluster Distribution:** Visualized the number of movies per cluster, showing Cluster 2 as the most dominant with ~120K movies.
+**PCA Projection:** Applied PCA to project genre features into 2D, showing that clusters are well-separated, especially clusters 0, 2, and 4.
+This clustering helped group the movies into genre-based themes and offers insights into genre prevalence and diversity across the dataset.
 
 
