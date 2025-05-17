@@ -1,3 +1,6 @@
+# DSC 511- Group Project 
+
+**Iiana Frantzia,Eleni Yiasoumi,Rebecca Hailou**
 
 ## IMDb Non-Commercial Datasets
 
