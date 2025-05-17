@@ -1,4 +1,3 @@
-<img width="591" alt="image" src="https://github.com/user-attachments/assets/75ea4293-9395-4693-be4d-c89149ff47bc" /><img width="591" alt="image" src="https://github.com/user-attachments/assets/f046b25c-c736-4e4d-94c7-3bc43aa1f1c3" /># DSC511 - Big Data Analytics Group Project
 
 ## IMDb Non-Commercial Datasets
 
@@ -92,6 +91,7 @@ Text analysis was a crucial step in our project to convert unstructured textual 
 **Normalization**
 
 **Lemmatization**
+
 These steps were essential to reduce vocabulary size, eliminate noise, and standardize input for effective vectorization and semantic analysis.
 
 We focused on key textual columns such as:
@@ -101,6 +101,7 @@ We focused on key textual columns such as:
 **genres**
 
 **primaryProfession**
+
 During the cleaning phase, we encountered multilingual content, which made stopword removal challenging. Although we could not feasibly eliminate every irrelevant word manually, we made a strong effort to remove as many as possible to improve downstream performance.
 
 We adopted two separate preprocessing pipelines:
@@ -178,7 +179,7 @@ To enhance contextual understanding, we extended the feature set with bigrams an
 Evaluated clustering performance using silhouette scores, comparing scores before and after including bigrams.
 The improvement in silhouette scores demonstrated that bigrams contributed to more cohesive and well-separated clusters.
 
--**Latent Dirichlet Allocation (LDA)**
+- **Latent Dirichlet Allocation (LDA)**
 
 We then applied LDA (Latent Dirichlet Allocation) for probabilistic topic modeling, successfully extracting 7 distinct topics from the lemmatized movie titles.
 
