@@ -1,4 +1,4 @@
-# DSC511 - Big Data Analytics Group Project
+<img width="591" alt="image" src="https://github.com/user-attachments/assets/75ea4293-9395-4693-be4d-c89149ff47bc" /><img width="591" alt="image" src="https://github.com/user-attachments/assets/f046b25c-c736-4e4d-94c7-3bc43aa1f1c3" /># DSC511 - Big Data Analytics Group Project
 
 ## IMDb Non-Commercial Datasets
 
@@ -74,38 +74,67 @@ Columns Overview
 
 
 
+
+
+
+
+
+
+
 ## Advanced Analysis
 
 ### Text Analysis
 
-#### Text Preprocessing by Column
+Text analysis was a crucial step in our project to convert unstructured textual data into a structured format suitable for machine learning workflows. We applied a comprehensive pipeline of preprocessing techniques to clean and prepare textual features. This included:
 
-We applied various text preprocessing techniques depending on the content and role of each column in the dataset. Below is a summary:
+**Tokenization**
 
--**primaryTitle**
-Lowercasing: Converted all titles to lowercase for consistency.
-Tokenization: Split each title into individual tokens using PySpark's Tokenizer.
-Stopword Removal: Common words (e.g., "the", "a") were removed using StopWordsRemover.
-Lemmatization: In some experiments, NLTK’s PorterStemmer and WordNetLemmatizer were used via UDFs.
-TF-IDF Vectorization: Represented cleaned titles as sparse feature vectors using HashingTF and IDF.
+**Normalization**
 
--**genres**
-We split the genre string into tokens,apply lemmatization,removed duplicates and used `CountVectorizer` to convert them into numerical features for modeling.
+**Lemmatization**
+These steps were essential to reduce vocabulary size, eliminate noise, and standardize input for effective vectorization and semantic analysis.
 
--**primaryProfession**
-We split the profession strings into tokens, removed duplicates, and lemmatized each token to standardize word forms. Finally, we used `CountVectorizer` to convert the profession tokens into numerical features for modeling.
+We focused on key textual columns such as:
 
+**primaryTitle**
 
+**genres**
 
+**primaryProfession**
+During the cleaning phase, we encountered multilingual content, which made stopword removal challenging. Although we could not feasibly eliminate every irrelevant word manually, we made a strong effort to remove as many as possible to improve downstream performance.
 
+We adopted two separate preprocessing pipelines:
 
+- One for machine learning tasks (e.g., sentiment prediction) – this version excluded lemmatization, as we observed a slight drop in performance when it was included.
 
+- One for topic detection ,here, lemmatization was included, as it significantly improved the coherence of extracted topics.
 
+### Machine Learning
 
+After preprocessing and transforming the text data into feature vectors, we implemented a machine learning pipeline to extract patterns and make predictions. The pipeline followed a standard process:
 
+**Feature Extraction**
 
+**Model Training**
 
+**Validation**
 
+**Evaluation**
+
+We used Apache Spark MLlib to develop scalable machine learning models that support distributed processing. Both supervised and unsupervised techniques were explored based on task requirements.
+
+To enhance prediction performance, we incorporated sentiment scores (computed via **TextBlob**) as features. These scores provided insight into the overall tone of each movie’s description, offering valuable information for regression modeling.
+
+#### Model Comparison
+
+The models aimed to predict sentiment scores. Below is a summary of model performance:
+
+| Model               | R²     | RMSE   | Notes                                                 |
+|---------------------|--------|--------|-------------------------------------------------------|
+| **Gradient Boosted Trees (GBT)** | 0.378  | 0.1305 | Best performance, strong predictive capability       |
+| **Random Forest**       | ~0.35  | Higher | Solid runner-up, but less effective than GBT          |
+| **Linear Regression**   | Lower  | Higher | Noticeably weaker, poor generalization                |
+| **Decision Tree**       | Lower  | Higher | Weak performance, limited in capturing complexity     |
 
 
 ### Clustering
@@ -114,24 +143,59 @@ We split the profession strings into tokens, removed duplicates, and lemmatized 
 We applied unsupervised clustering using the KMeans algorithm on movie genres to identify common patterns in movie types.
 
 **Feature Construction:** `genre features` that we got from text analysis before and use it for clustering.
+
 **Optimal k Selection:** Used Silhouette Scores to evaluate different values of k. The best performance was observed at k = 6.
+
 **Clustering Results:**
 Fitted KMeans with k=6 to assign each movie to one of six genre-based clusters.
 Extracted top genres for each cluster by analyzing the cluster centers.
 Assigned intuitive labels to each cluster based on genre composition:
+
 **Cluster	Top Genres	Label**
 
 | Cluster | Top Genres                                      | Label                             |
 |---------|--------------------------------------------------|-----------------------------------|
-| **0**   | Fantasy, Drama, Comedy, Adventure, Action        | Fantasy & Action Mix              |
+| **0**   | Fantasy, Drama, Comedy, Adventure, Action        | Fantasy & Action              |
 | **1**   | Comedy, Documentary, Action, Romance, Adventure  | Diverse Popular Genres            |
 | **2**   | Drama, Comedy, Romance, Crime, Action            | Mainstream Drama & Romance        |
-| **3**   | Horror, Thriller, Drama, Mystery, Comedy         | Thriller & Mystery Blend          |
+| **3**   | Horror, Thriller, Drama, Mystery, Comedy         | Thriller & Mystery          |
 | **4**   | Drama, History, War, Biography, Romance          | Historical & Biographical         |
 | **5**   | Documentary, Biography, History, Drama, Music    | Informative & Cultural Features   |
 
 **Cluster Distribution:** Visualized the number of movies per cluster, showing Cluster 2 as the most dominant with ~120K movies.
+
 **PCA Projection:** Applied PCA to project genre features into 2D, showing that clusters are well-separated, especially clusters 0, 2, and 4.
 This clustering helped group the movies into genre-based themes and offers insights into genre prevalence and diversity across the dataset.
+
+### Topic Detection
+
+To uncover underlying themes in the textual data, we applied unsupervised topic modeling techniques.
+
+- **K-Means Clustering (Unigrams vs. Bigrams)**
+  
+Initially used K-Means clustering on unigram-based TF-IDF features to detect textual patterns.
+To enhance contextual understanding, we extended the feature set with bigrams and re-applied clustering.
+Evaluated clustering performance using silhouette scores, comparing scores before and after including bigrams.
+The improvement in silhouette scores demonstrated that bigrams contributed to more cohesive and well-separated clusters.
+
+-**Latent Dirichlet Allocation (LDA)**
+
+We then applied LDA (Latent Dirichlet Allocation) for probabilistic topic modeling, successfully extracting 7 distinct topics from the lemmatized movie titles.
+
+Identified semantically coherent themes, including:
+
+- Holiday & Family
+
+- Horror & Thriller
+
+- Romantic & Emotional narratives
+
+- Supernatural, Mystery, Religion
+
+Overall, LDA proved effective in uncovering latent thematic structures and provided interpretable groupings aligned with common movie genres and narrative styles.
+
+
+
+
 
 
