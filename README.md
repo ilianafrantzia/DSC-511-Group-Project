@@ -21,7 +21,7 @@ The seven available datasets are:
 | `title.akas.tsv.gz` | Alternative titles across regions/languages |
 | `title.basics.tsv.gz` | Core info about titles (type, year, genres) |
 | `title.crew.tsv.gz` | Director and writer information |
-| `title.episode.tsv.gz` | TTV episode information (season/episode number, series ID) |
+| `title.episode.tsv.gz` | TV episode information (season/episode number, series ID) |
 | `title.principals.tsv.gz` | Main cast and crew |
 | `title.ratings.tsv.gz` | IMDb average rating and number of votes |
 
@@ -197,6 +197,86 @@ Identified semantically coherent themes, including:
 - Supernatural, Mystery, Religion
 
 Overall, LDA proved effective in uncovering latent thematic structures and provided interpretable groupings aligned with common movie genres and narrative styles.
+
+
+###  Recommendation System
+
+We implemented a content-based recommendation system using PySpark, designed to suggest similar movies based on user preferences and movie features. This system leverages vector similarity techniques to identify relevant titles within the IMDb dataset.
+
+**Feature Engineering**
+
+Combined multiple columns using VectorAssembler, including:
+
+Numeric features: startYear, runtimeMinutes, isAdult, averageRating, numVotes
+
+Encoded features: genre_features, profession_features, tfidf_features, director_features, writer_features
+
+Standardized the feature vectors using StandardScaler to ensure comparability across attributes.
+
+**Similarity Computation**
+
+Two methods were tested for similarity:
+
+**Cosine Similarity:** Focuses on vector direction, suitable for sparse/high-dimensional data.
+
+**Euclidean Distance:** Measures raw distance in the vector space, used for comparison.
+
+**Movie-to-Movie Recommendation**
+
+Set a target movie (e.g., Titanic) and retrieved its feature vector.
+
+Calculated cosine similarity between the target and all other movies.
+
+Returned top 10 most similar movies excluding the target based on the features we set each time.
+
+**Personalized User Recommendations**
+
+Allowed users to specify a list of 3 favorite movies (e.g., Percy Jackson, The Maze Runner, Chronicles of Narnia).
+
+Averaged their feature vectors into a user profile vector.
+
+Recommended movies based on their similarity to this aggregated user profile.
+
+Results aligned with user preferences (e.g., fantasy/adventure themes), but also revealed areas for improvement , filtering out less relevant genres.
+
+**Final Feature Selection & Similarity Metric**
+
+After testing various combinations, we selected the following features as the most relevant for generating movie recommendations:
+
+- genre
+  
+- startYear
+
+- isAdult
+
+- director
+
+- writer
+  
+These attributes capture both thematic and stylistic elements of movies, enabling more meaningful similarity comparisons.
+
+We also determined that cosine similarity was the most appropriate distance metric for our content-based system. It focuses on the direction of vectors rather than magnitude, making it ideal for high-dimensional and scaled feature spaces. This choice provided better alignment with user preferences and thematic grouping compared to Euclidean distance.
+
+### Graph Analysis
+
+We used GraphFrames to perform graph analysis on the IMDb dataset by constructing a movie similarity graph based on shared directors. This approach enabled us to explore structural relationships between films and uncover patterns in creative collaborations.
+
+**Graph Construction**
+
+**Vertices:** Represented each movie using its unique ID (tconst) and title (primaryTitle).
+
+**Edges:** A directed edge was created between two movies if they shared the same director. That is, if Director X directed both Movie A and Movie B, an edge was formed from A → B.
+
+**Graph Metrics & Interpretation**
+
+Calculated degree centrality for each movie ( the number of connections a movie has based on shared directors).
+
+Found that some nodes had very high connectivity—for instance:
+
+Venice 70: Future Reloaded had 1804 connections, acting as a hub of collaboration and indicating wide directorial overlap with other movies.
+
+Observed multiple disconnected components, reflecting independent creative clusters in the industry .
+
 
 
 
