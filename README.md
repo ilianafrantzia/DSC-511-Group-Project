@@ -319,6 +319,8 @@ Venice 70: Future Reloaded had 1804 connections, acting as a hub of collaboratio
 
 Observed multiple disconnected components, reflecting independent creative clusters in the industry .
 
+In addition to the graph analysis techniques successfully applied (such as degree centrality, triangle count, and network visualization), we also attempted to run advanced algorithms including PageRank, Shortest Paths, Label Propagation, and Connected Components using the GraphFrames library in PySpark. However, these operations did not execute as intended .
+
 
 
 
