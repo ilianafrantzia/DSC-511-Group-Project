@@ -213,14 +213,14 @@ This clustering helped group the movies into genre-based themes and offers insig
 
 To uncover underlying themes in the textual data, we applied unsupervised topic modeling techniques.
 
-**1. K-Means Clustering (Unigrams vs. Bigrams)**
+**i. K-Means Clustering (Unigrams vs. Bigrams)**
   
 Initially used K-Means clustering on unigram-based TF-IDF features to detect textual patterns.
 To enhance contextual understanding, we extended the feature set with bigrams and re-applied clustering.
 Evaluated clustering performance using silhouette scores, comparing scores before and after including bigrams.
 The improvement in silhouette scores demonstrated that bigrams contributed to more cohesive and well-separated clusters.
 
-**2. Latent Dirichlet Allocation (LDA)**
+**ii. Latent Dirichlet Allocation (LDA)**
 
 We then applied LDA (Latent Dirichlet Allocation) for probabilistic topic modeling, successfully extracting 7 distinct topics from the lemmatized movie titles.
 
@@ -250,9 +250,9 @@ Standardized the feature vectors using StandardScaler to ensure comparability ac
 
 Two methods were tested for similarity:
 
-1. Cosine Similarity: Focuses on vector direction, suitable for sparse/high-dimensional data.
+i. Cosine Similarity: Focuses on vector direction, suitable for sparse/high-dimensional data.
 
-2. Euclidean Distance: Measures raw distance in the vector space, used for comparison.
+ii. Euclidean Distance: Measures raw distance in the vector space, used for comparison.
 
 **Movie-to-Movie Recommendation**
 
