@@ -29,6 +29,7 @@ The seven available datasets are:
 ###  Final Dataset Schema
 
 After merging all 7 IMDb datasets and dropping irrelevant columns and rows with null values, we constructed a clean, analysis-ready dataset.
+
 We also filtered the dataset to include only entries where titleType = 'movie', excluding TV episodes, shorts, and series, in order to focus our analysis  on movies.
 
 We saved the resulting dataset in two formats:
@@ -72,20 +73,61 @@ We saved the resulting dataset in two formats:
  **Target variable:** averageRating
 
 
-## Exploratory Data Analysis
+## Exploratory Data Analysis (EDA)
 
+We performed a comprehensive EDA on the IMDb dataset using PySpark DataFrames. The main steps included:
 
+- **Data Loading & Inspection:** Loaded the combined movie dataset and inspected its schema, row samples and descriptive statistics.
 
+- **Data Cleaning:** Handled missing values in key columns like runtimeMinutes, numVotes and averageRating by either filtering or imputing appropriate values. Casted types to ensure numeric operations were valid.
+  
+- **Feature Parsing:** Exploded multi-valued columns such as genres to allow genre-level analysis.
 
+- **Statistical Summaries:** Computed summary statistics for numeric columns and examined the distributions of ratings, runtimes and votes.
 
+- **Genre Analysis:** Identified the most common genres and analyzed their average ratings and popularity.
+  
+- **Temporal Trends:** Explored movie release trends over the years (by decades) and how average ratings evolved with time. However ,there are no strong linear correlations between the selected numerical IMDb features. 
 
+#### Key Findings from EDA
 
+**Rating Distribution:**
 
+The average rating for most movies is above 6.5 and the distribution is mostly symmetric, indicating a balanced perception of movie quality.
+
+**Number of Votes:**
+
+While most movies have moderate vote counts, a few movies received an exceptionally high number of votes, showing strong popularity outliers.
+
+**Runtime Insights:**
+
+We removed movies with invalid runtimes (such as, 0 or greater than 600 minutes).
+The majority of films have runtimes between 80–120 minutes, which aligns with typical industry standards.
+Average runtime increased with each decade, reflecting a trend toward longer films over time.
+
+**Adult Content Distribution:**
+
+The isAdult field is highly imbalanced ,where the  majority of movies are intended for general audiences rather than adult-only.
+
+**Role & Profession Demographics:**
+
+The most frequent entries in both category and primaryProfession are actors and actresses.
+There are more male actors than female actresses, indicating a gender imbalance in the dataset.
+
+**Genre Popularity:**
+
+The most common genres are Drama, Comedy, Romance and Documentary, showing a dominance of emotional and narrative-driven content.
+
+**Temporal Trends:**
+
+Both the average number of votes and average runtime increase over the decades, which is consistent with the evolution of film popularity and production scale.
+
+This analysis helped us clean and understand the structure of our data, preparing it for further advanced analytics like recommendation systems, graph analysis and text analysis.
 
 
 ## Advanced Analysis
 
-### Text Analysis
+### 1. Text Analysis
 
 Text analysis was a crucial step in our project to convert unstructured textual data into a structured format suitable for machine learning workflows. We applied a comprehensive pipeline of preprocessing techniques to clean and prepare textual features. This included:
 
@@ -113,7 +155,7 @@ We adopted two separate preprocessing pipelines:
 
 - One for topic detection ,here, lemmatization was included, as it significantly improved the coherence of extracted topics.
 
-### Machine Learning
+### 2. Machine Learning
 
 After preprocessing and transforming the text data into feature vectors, we implemented a machine learning pipeline to extract patterns and make predictions. The pipeline followed a standard process:
 
@@ -199,7 +241,7 @@ Identified semantically coherent themes, including:
 Overall, LDA proved effective in uncovering latent thematic structures and provided interpretable groupings aligned with common movie genres and narrative styles.
 
 
-###  Recommendation System
+### 3. Recommendation System
 
 We implemented a content-based recommendation system using PySpark, designed to suggest similar movies based on user preferences and movie features. This system leverages vector similarity techniques to identify relevant titles within the IMDb dataset.
 
@@ -257,7 +299,7 @@ These attributes capture both thematic and stylistic elements of movies, enablin
 
 We also determined that cosine similarity was the most appropriate distance metric for our content-based system. It focuses on the direction of vectors rather than magnitude, making it ideal for high-dimensional and scaled feature spaces. This choice provided better alignment with user preferences and thematic grouping compared to Euclidean distance.
 
-### Graph Analysis
+### 4. Graph Analysis
 
 We used GraphFrames to perform graph analysis on the IMDb dataset by constructing a movie similarity graph based on shared directors. This approach enabled us to explore structural relationships between films and uncover patterns in creative collaborations.
 
