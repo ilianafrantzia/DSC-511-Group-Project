@@ -180,7 +180,6 @@ The models aimed to predict sentiment scores. Below is a summary of model perfor
 | **Gradient Boosted Trees (GBT)** | 0.378  | 0.1305 | Best performance, strong predictive capability       |
 | **Random Forest**       | ~0.35  | Higher | Solid runner-up, but less effective than GBT          |
 | **Linear Regression**   | Lower  | Higher | Noticeably weaker, poor generalization                |
-| **Decision Tree**       | Lower  | Higher | Weak performance, limited in capturing complexity     |
 
 
 ### Clustering
