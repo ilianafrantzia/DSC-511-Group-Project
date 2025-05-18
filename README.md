@@ -181,6 +181,7 @@ The models aimed to predict sentiment scores. Below is a summary of best perform
 ### Clustering
 
 **Genre-Based Clustering**
+
 We applied unsupervised clustering using the KMeans algorithm on movie genres to identify common patterns in movie types.
 
 Feature Construction: `genre features` that we got from text analysis before and use it for clustering.
@@ -188,6 +189,7 @@ Feature Construction: `genre features` that we got from text analysis before and
 Optimal k Selection: Used Silhouette Scores to evaluate different values of k. The best performance was observed at k = 6.
 
 Clustering Results:
+
 Fitted KMeans with k=6 to assign each movie to one of six genre-based clusters.
 Extracted top genres for each cluster by analyzing the cluster centers.
 
@@ -204,9 +206,9 @@ Assigned intuitive labels to each cluster based on genre composition:
 | **4**   | Drama, History, War, Biography, Romance          | Historical & Biographical         |
 | **5**   | Documentary, Biography, History, Drama, Music    | Informative & Cultural Features   |
 
-Cluster Distribution: Visualized the number of movies per cluster, showing Cluster 2 as the most dominant with ~120K movies.
+**Cluster Distribution:** Visualized the number of movies per cluster, showing Cluster 2 as the most dominant with ~120K movies.
 
-PCA Projection: Applied PCA to project genre features into 2D, showing that clusters are well-separated, especially clusters 0, 2, and 4.
+**PCA Projection:** Applied PCA to project genre features into 2D, showing that clusters are well-separated, especially clusters 0, 2, and 4.
 This clustering helped group the movies into genre-based themes and offers insights into genre prevalence and diversity across the dataset.
 
 ### Topic Detection
