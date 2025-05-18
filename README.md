@@ -28,7 +28,7 @@ The seven available datasets are:
 
 ###  Final Dataset Schema
 
-After merging all 7 IMDb datasets and dropping irrelevant columns and rows with null values, we constructed a clean, analysis-ready dataset.
+After exploring all 7 IMDb datasets we decided to merge 5 of them and dropping irrelevant columns and rows with null values, we constructed a clean, analysis-ready dataset.
 
 We also filtered the dataset to include only entries where titleType = 'movie', excluding TV episodes, shorts, and series, in order to focus our analysis  on movies.
 
@@ -78,10 +78,6 @@ We saved the resulting dataset in two formats:
 We performed a comprehensive EDA on the IMDb dataset using PySpark DataFrames. The main steps included:
 
 - **Data Loading & Inspection:** Loaded the combined movie dataset and inspected its schema, row samples and descriptive statistics.
-
-- **Data Cleaning:** Handled missing values in key columns like runtimeMinutes, numVotes and averageRating by either filtering or imputing appropriate values. Casted types to ensure numeric operations were valid.
-  
-- **Feature Parsing:** Exploded multi-valued columns such as genres to allow genre-level analysis.
 
 - **Statistical Summaries:** Computed summary statistics for numeric columns and examined the distributions of ratings, runtimes and votes.
 
