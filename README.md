@@ -4,12 +4,12 @@
 
 ## IMDb Non-Commercial Datasets
 
-### 1. Project Overview
+### Project Overview
 
 This project focuses on performing exploratory and advanced analytics on the IMDb Non-Commercial Datasets (https://developer.imdb.com/non-commercial-datasets/) using Apache Spark. The aim is to derive insights into factors that influence movie ratings and popularity, apply predictive modeling techniques, perform text analysis and build a content-based recommendation system.
 Our main objective is to analyze and identify key factors that impact the success of a movie. We then use these insights to train machine learning models capable of estimating a movie’s IMDb rating and provide personalized movie recommendations.
 
-### 2. Dataset Description
+### Dataset Description
 
 We are working on the IMDb Non-Commercial dataset. Each dataset is a gzipped, tab-separated-values (TSV) formatted file encoded in UTF-8. The first line in each file contains column headers. Missing values are represented with '\N'.We begin by exploring each dataset separately to understand their features and determine which ones are important for achieving our goal. Once selected, the datasets are cleaned and merged to proceed with the analysis.
 
@@ -26,7 +26,7 @@ The seven available datasets are:
 | `title.ratings.tsv.gz` | IMDb average rating and number of votes |
 
 
-### 3. Final Dataset Schema
+###  Final Dataset Schema
 
 After merging all 7 IMDb datasets and dropping irrelevant columns and rows with null values, we constructed a clean, analysis-ready dataset.
 We also filtered the dataset to include only entries where titleType = 'movie', excluding TV episodes, shorts, and series, in order to focus our analysis  on movies.
@@ -37,7 +37,7 @@ We saved the resulting dataset in two formats:
 
 .parquet — for optimized performance in Apache Spark
 
-Columns Overview
+**Columns Overview**
 
 - nconst: Person unique ID 
 
@@ -89,21 +89,21 @@ Columns Overview
 
 Text analysis was a crucial step in our project to convert unstructured textual data into a structured format suitable for machine learning workflows. We applied a comprehensive pipeline of preprocessing techniques to clean and prepare textual features. This included:
 
-**Tokenization**
+- Tokenization
 
-**Normalization**
+- Normalization
 
-**Lemmatization**
+- Lemmatization
 
 These steps were essential to reduce vocabulary size, eliminate noise, and standardize input for effective vectorization and semantic analysis.
 
 We focused on key textual columns such as:
 
-**primaryTitle**
+- primaryTitle
 
-**genres**
+- genres
 
-**primaryProfession**
+- primaryProfession
 
 During the cleaning phase, we encountered multilingual content, which made stopword removal challenging. Although we could not feasibly eliminate every irrelevant word manually, we made a strong effort to remove as many as possible to improve downstream performance.
 
@@ -117,13 +117,13 @@ We adopted two separate preprocessing pipelines:
 
 After preprocessing and transforming the text data into feature vectors, we implemented a machine learning pipeline to extract patterns and make predictions. The pipeline followed a standard process:
 
-**Feature Extraction**
+- Feature Extraction
 
-**Model Training**
+- Model Training
 
-**Validation**
+- Validation
 
-**Evaluation**
+- Evaluation
 
 We used Apache Spark MLlib to develop scalable machine learning models that support distributed processing. Both supervised and unsupervised techniques were explored based on task requirements.
 
