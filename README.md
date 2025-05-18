@@ -153,15 +153,15 @@ We adopted two separate preprocessing pipelines:
 
 ### 2. Machine Learning
 
-After preprocessing and transforming the text data into feature vectors, we implemented a machine learning pipeline to extract patterns and make predictions. The pipeline followed a standard process:
+After preprocessing and transforming the text data into feature vectors, we implemented a machine learning pipeline to extract patterns and make predictions. The pipeline followed a tailored process depending on the model used:
 
-- Feature Extraction
+- Feature Extraction was applied only for the Random Forest and Gradient Boosted Trees (GBT) models.
 
-- Model Training
+- Model Training was conducted for all models, including Linear Regression, Ridge, Lasso, and Elastic Net.
 
-- Validation
+- We also experimented with different hyperparameter settings to optimize their performance.
 
-- Evaluation
+- Validation and Evaluation were performed consistently across all models using metrics like RMSE, R².
 
 We used Apache Spark MLlib to develop scalable machine learning models that support distributed processing. Both supervised and unsupervised techniques were explored based on task requirements.
 
@@ -169,30 +169,31 @@ To enhance prediction performance, we incorporated sentiment scores (computed vi
 
 #### Model Comparison
 
-The models aimed to predict sentiment scores. Below is a summary of model performance:
+The models aimed to predict sentiment scores. Below is a summary of best performing models:
 
 | Model               | R²     | RMSE   | Notes                                                 |
 |---------------------|--------|--------|-------------------------------------------------------|
-| **Gradient Boosted Trees (GBT)** | 0.378  | 0.1305 | Best performance, strong predictive capability       |
-| **Random Forest**       | ~0.35  | Higher | Solid runner-up, but less effective than GBT          |
-| **Linear Regression**   | Lower  | Higher | Noticeably weaker, poor generalization                |
+| **GBT with feature selection** | 0.378  | 0.1311 | Best performance, strong predictive capability       |
+| **Ridge Regression**       | 0.3348  | 0.1356 | Slight improvement over linear regression due to regularization  |
+| **Linear Regression**   |  0.3347 | 0.1356 |  Baseline model, no regularization applied  |
 
 
 ### Clustering
 
-#### Genre-Based Clustering
+**Genre-Based Clustering**
 We applied unsupervised clustering using the KMeans algorithm on movie genres to identify common patterns in movie types.
 
-**Feature Construction:** `genre features` that we got from text analysis before and use it for clustering.
+Feature Construction: `genre features` that we got from text analysis before and use it for clustering.
 
-**Optimal k Selection:** Used Silhouette Scores to evaluate different values of k. The best performance was observed at k = 6.
+Optimal k Selection: Used Silhouette Scores to evaluate different values of k. The best performance was observed at k = 6.
 
-**Clustering Results:**
+Clustering Results:
 Fitted KMeans with k=6 to assign each movie to one of six genre-based clusters.
 Extracted top genres for each cluster by analyzing the cluster centers.
+
 Assigned intuitive labels to each cluster based on genre composition:
 
-**Cluster	Top Genres	Label**
+**Cluster	Top Genres Label**
 
 | Cluster | Top Genres                                      | Label                             |
 |---------|--------------------------------------------------|-----------------------------------|
@@ -203,23 +204,23 @@ Assigned intuitive labels to each cluster based on genre composition:
 | **4**   | Drama, History, War, Biography, Romance          | Historical & Biographical         |
 | **5**   | Documentary, Biography, History, Drama, Music    | Informative & Cultural Features   |
 
-**Cluster Distribution:** Visualized the number of movies per cluster, showing Cluster 2 as the most dominant with ~120K movies.
+Cluster Distribution: Visualized the number of movies per cluster, showing Cluster 2 as the most dominant with ~120K movies.
 
-**PCA Projection:** Applied PCA to project genre features into 2D, showing that clusters are well-separated, especially clusters 0, 2, and 4.
+PCA Projection: Applied PCA to project genre features into 2D, showing that clusters are well-separated, especially clusters 0, 2, and 4.
 This clustering helped group the movies into genre-based themes and offers insights into genre prevalence and diversity across the dataset.
 
 ### Topic Detection
 
 To uncover underlying themes in the textual data, we applied unsupervised topic modeling techniques.
 
-- **K-Means Clustering (Unigrams vs. Bigrams)**
+**1. K-Means Clustering (Unigrams vs. Bigrams)**
   
 Initially used K-Means clustering on unigram-based TF-IDF features to detect textual patterns.
 To enhance contextual understanding, we extended the feature set with bigrams and re-applied clustering.
 Evaluated clustering performance using silhouette scores, comparing scores before and after including bigrams.
 The improvement in silhouette scores demonstrated that bigrams contributed to more cohesive and well-separated clusters.
 
-- **Latent Dirichlet Allocation (LDA)**
+**2. Latent Dirichlet Allocation (LDA)**
 
 We then applied LDA (Latent Dirichlet Allocation) for probabilistic topic modeling, successfully extracting 7 distinct topics from the lemmatized movie titles.
 
@@ -242,21 +243,16 @@ We implemented a content-based recommendation system using PySpark, designed to 
 
 **Feature Engineering**
 
-Combined multiple columns using VectorAssembler, including:
-
-Numeric features: startYear, runtimeMinutes, isAdult, averageRating, numVotes
-
-Encoded features: genre_features, profession_features, tfidf_features, director_features, writer_features
-
+Combined multiple columns using VectorAssembler, including numeric features like startYear, runtimeMinutes, isAdult, averageRating, numVotes and encoded features like genre_features, profession_features, tfidf_features, director_features, writer_features.
 Standardized the feature vectors using StandardScaler to ensure comparability across attributes.
 
 **Similarity Computation**
 
 Two methods were tested for similarity:
 
-**Cosine Similarity:** Focuses on vector direction, suitable for sparse/high-dimensional data.
+1. Cosine Similarity: Focuses on vector direction, suitable for sparse/high-dimensional data.
 
-**Euclidean Distance:** Measures raw distance in the vector space, used for comparison.
+2. Euclidean Distance: Measures raw distance in the vector space, used for comparison.
 
 **Movie-to-Movie Recommendation**
 
@@ -300,9 +296,9 @@ We used GraphFrames to perform graph analysis on the IMDb dataset by constructin
 
 **Graph Construction**
 
-**Vertices:** Represented each movie using its unique ID (tconst) and title (primaryTitle).
+- Vertices: Represented each movie using its unique ID (tconst) and title (primaryTitle).
 
-**Edges:** A directed edge was created between two movies if they shared the same director. That is, if Director X directed both Movie A and Movie B, an edge was formed from A → B.
+- Edges: A directed edge was created between two movies if they shared the same director. That is, if Director X directed both Movie A and Movie B, an edge was formed from A → B.
 
 **Graph Metrics & Interpretation**
 
